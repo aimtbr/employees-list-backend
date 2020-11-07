@@ -20,6 +20,6 @@ const Users = new Schema({
     type: Types.Boolean,
     default: false
   }
-}, { timestamps: { currentTime: new Date().toISOString() } });
+}, { timestamps: { currentTime: () => new Date().toISOString() } });
 
 module.exports = Users;

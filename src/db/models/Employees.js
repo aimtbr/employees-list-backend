@@ -7,13 +7,11 @@ const { Types } = Schema;
 const Employees = new Schema({
   fullName: {
     type: Types.String,
-    minLength: 2,
-    required: true
+    minLength: 2
   },
   gender: {
     type: Types.String,
-    enum: genders,
-    required: true
+    enum: genders
   },
   contacts: Types.String,
   position: {
@@ -28,6 +26,6 @@ const Employees = new Schema({
     type: Types.Boolean,
     default: false
   }
-}, { timestamps: { currentTime: new Date().toISOString() } });
+}, { timestamps: { currentTime: () => new Date().toISOString() } });
 
 module.exports = Employees;
