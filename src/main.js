@@ -8,12 +8,19 @@ const employeesRouter = require('./routes/employees.js');
 
 const { PORT = 3000 } = process.env;
 
+const useModifications = (app) => {
+  app.use(cors());
+  app.use(express.json());
+  app.use(express.urlencoded({ extended: true }));
+  app.use('/api', [isAuthorized, employeesRouter]);
+};
+
 const run = async () => {
   await connectToDatabase();
+
   const app = express();
 
-  app.use(cors());
-  app.use('/api', [isAuthorized, employeesRouter]);
+  useModifications(app);
 
   app.listen(PORT, () => {
     console.log('App is running on port ' + PORT);
