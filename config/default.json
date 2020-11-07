@@ -1,0 +1,9 @@
+{
+  "mongodb": {
+    "host": "localhost",
+    "port": "27017",
+    "db": "employees-list",
+    "username": "default",
+    "password": "n1J241L9FkpMF64"
+  }
+}
