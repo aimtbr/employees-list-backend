@@ -1,6 +1,8 @@
 const { Employees } = require('../../db/models');
 
 
+const schemaProps = Object.keys(Employees.schema.paths);
+
 module.exports = {
   getManyEmployees: async (req, res) => {
     const { limit, skip } = req.query;
@@ -25,9 +27,7 @@ module.exports = {
     const { body, params } = req;
     const { id } = params;
     const query = { _id: id };
-    const options = { new: true };
 
-    const schemaProps = Object.keys(Employees.schema.paths);
     const bodyKeys = Object.keys(body);
     const everyPropExist = bodyKeys.every((key) => schemaProps.includes(key));
 
@@ -35,7 +35,7 @@ module.exports = {
       res.status(400).json({ error: 'Invalid key' });
     }
 
-    const modifiedDoc = await Employees.updateOne(query, body, options)
+    const modifiedDoc = await Employees.updateOne(query, body)
       .catch((error) => res.status(400).json({ error }));
 
     res.status(200).json(modifiedDoc);
