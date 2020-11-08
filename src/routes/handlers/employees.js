@@ -15,13 +15,13 @@ module.exports = {
       .skip(skipCasted)
       .catch((error) => res.status(400).json({ error }));
 
-    res.status(200).json(result);
+    return res.status(200).json(result);
   },
   addOneEmployee: async (req, res) => {
     const doc = await Employees.create({})
       .catch((error) => res.status(400).json({ error }));
 
-    res.status(200).send(doc._id);
+    return res.status(200).send(doc._id);
   },
   editOneEmployee: async (req, res) => {
     const { body, params } = req;
@@ -32,13 +32,13 @@ module.exports = {
     const everyPropExist = bodyKeys.every((key) => schemaProps.includes(key));
 
     if (!everyPropExist) {
-      res.status(400).json({ error: 'Invalid key' });
+      return res.status(400).json({ error: 'Invalid key' });
     }
 
-    const modifiedDoc = await Employees.updateOne(query, body)
+    await Employees.updateOne(query, body)
       .catch((error) => res.status(400).json({ error }));
 
-    res.status(200).json(modifiedDoc);
+    return res.sendStatus(200);
   },
   deleteOneEmployee: async (req, res) => {
     const { id } = req.params;
@@ -48,6 +48,6 @@ module.exports = {
     await Employees.updateOne(query, { deleted: true }, options)
       .catch((error) => res.status(400).json({ error }));
 
-    res.status(200);
+    return res.sendStatus(200);
   }
 };
