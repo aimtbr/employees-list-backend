@@ -7,13 +7,17 @@ const { Types } = Schema;
 const Employees = new Schema({
   fullName: {
     type: Types.String,
-    minLength: 2
+    minLength: 2,
+    maxLength: 100
   },
   gender: {
     type: Types.String,
     enum: genders
   },
-  contacts: Types.String,
+  contacts: {
+    type: Types.String,
+    maxLength: 25
+  },
   position: {
     type: Types.String,
     enum: positions,

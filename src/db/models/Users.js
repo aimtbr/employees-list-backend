@@ -7,15 +7,22 @@ const { Types } = Schema;
 const Users = new Schema({
   email: {
     type: Types.String,
-    required: true
+    required: true,
+    validate: {
+      validator: (value) => {
+        return /^[^.,\s][\d,\w,\S]+@[\d,\w]+\.\w+$/.test(value);
+      }
+    }
   },
   password: {
     type: Types.String,
-    required: true
+    required: true,
+    maxLength: 100
   },
   login: {
     type: Types.String,
-    required: true
+    required: true,
+    maxlength: 25
   },
   secret: {
     type: Types.String,
