@@ -47,4 +47,16 @@ const Employees = new Schema({
   }
 );
 
+Employees.index(
+  {
+    fullName: 'text',
+    gender: 'text',
+    contacts: 'text',
+    position: 'text'
+  },
+  {
+    default_language: 'none'
+  }
+);
+
 module.exports = Employees;

@@ -6,11 +6,18 @@ const schemaProps = Object.keys(Employees.schema.paths);
 module.exports = {
   getManyEmployees: async (req, res) => {
     try {
-      const { limit, skip, sort } = req.query;
-      const filter = { deleted: false };
+      const { limit, skip, sort, search } = req.query;
+      let filter = { deleted: false };
+
       const limitCasted = parseInt(limit, 10) || 0;
       const skipCasted = parseInt(skip, 10) || 0;
       const sortCasted = (sort && JSON.parse(sort)) || { dateAdded: -1 };
+
+      if (search) {
+        const searchQuery = { $text: { $search: search } };
+
+        filter = { ...searchQuery, ...filter };
+      }
 
       const result = await Employees.find(filter)
         .limit(limitCasted)

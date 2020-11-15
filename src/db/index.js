@@ -3,6 +3,7 @@ const config = require('config');
 
 
 mongoose.set('useUnifiedTopology', true);
+mongoose.set('useCreateIndex', true);
 
 const connectToDatabase = async () => {
   const { host, port, username, password, db } = config.get('mongodb');

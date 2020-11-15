@@ -1,6 +1,6 @@
 const express = require('express');
 
-const handlers = require('./handlers/default.js');
+const handlers = require('./handlers/notFound.js');
 
 
 const router = express.Router();

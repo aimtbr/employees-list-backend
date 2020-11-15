@@ -17,7 +17,7 @@ const useModifications = (app) => {
   app.use(express.urlencoded({ extended: true }));
   app.use('/users', routers.users);
   app.use('/api', [isAuthorized, routers.employees]);
-  app.use('*', routers.default);
+  app.use('*', routers.notFound);
 };
 
 const run = async () => {
