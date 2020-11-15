@@ -15,5 +15,8 @@ module.exports = {
 
     return decryptedData;
   },
-  encryptAES: (data, newSalt = salt) => crypto.AES.encrypt(data, newSalt).toString()
+  encryptAES: (data, newSalt = salt) => crypto.AES.encrypt(data, newSalt).toString(),
+  isValidPassword: (password) => /^[\d\w*-_.,?+'|\\\/=]{8,100}$/.test(password),
+  isValidEmail: (email) => /^[^.,\s][\d,\w,\S]{2,30}@[\d,\w]{1,10}\.\w{1,10}$/.test(email),
+  isValidLogin: (login) => /^[\d\w.-]{4,25}$/.test(login)
 };

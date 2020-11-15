@@ -22,12 +22,5 @@ module.exports = {
     }
 
     return res.sendStatus(401);
-  },
-  isAllowedToAuth: (req, res, next) => {
-    if (req.cookies.access_token !== undefined) {
-      return res.status(404).json({ error: 'Already authorized' });
-    }
-
-    return next();
   }
 };

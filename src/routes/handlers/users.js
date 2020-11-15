@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt');
 
-const { decryptAES, encryptAES } = require('../../lib/helpers.js');
+const { decryptAES, encryptAES, isValidPassword } = require('../../lib/helpers.js');
 const { Users } = require('../../db/models');
 
 
@@ -11,7 +11,7 @@ module.exports = {
     try {
       const { body: encryptedBody } = req;
       const saltRounds = 12;
-      const propsInUse = [];
+      const invalidProps = [];
 
       const decryptedBody = decryptAES(encryptedBody, true);
       const { email, login, password } = decryptedBody;
@@ -29,17 +29,21 @@ module.exports = {
       }
 
       if (emailInUse !== null) {
-        propsInUse.push('email');
+        invalidProps.push('email');
       }
 
       if (loginInUse !== null) {
-        propsInUse.push('login');
+        invalidProps.push('login');
       }
 
-      if (propsInUse.length !== 0) {
+      if (!isValidPassword(password)) {
+        invalidProps.push('password');
+      }
+
+      if (invalidProps.length > 0) {
         return res.status(403).json({
-          props: propsInUse,
-          error: 'Some of the properties already in use'
+          props: invalidProps,
+          error: 'Already used or invalid'
         });
       }
 
@@ -47,13 +51,12 @@ module.exports = {
       const encryptedPassword = await bcrypt.hash(password, saltRounds);
 
       const query = { ...decryptedBody, password: encryptedPassword };
-      await Users.create(query)
-        .catch((error) => res.status(400).json({ error }));
+      await Users.create(query);
 
       return res.sendStatus(201);
     } catch (error) {
-      console.error(error);
-      return res.sendStatus(400);
+      console.log(error);
+      return res.status(400).json({ error });
     }
   },
   authorizeUser: async (req, res) => {
@@ -74,30 +77,33 @@ module.exports = {
       const user = await Users.findOne({ login });
 
       if (user !== null) {
-        const { password, secret } = user;
+        const { email, login, password, secret } = user;
         const passwordMatches = await bcrypt.compare(plainPassword, password);
 
         if (passwordMatches) {
-          return res.cookie('access_token', secret, {
-            httpOnly: true,
-            encode: encryptAES,
-          }).sendStatus(200);
-        } else {
-          return res.status(403).json({ invalid: 'password' });
+          return res.status(200)
+            .cookie('access_token', secret, {
+              httpOnly: true,
+              encode: encryptAES,
+            })
+            .json({ email, login });
         }
       }
 
-      return res.status(403).json({ invalid: 'login' });
+      return res.sendStatus(403);
     } catch (error) {
-      console.error(error);
       return res.sendStatus(400);
     }
   },
   logoutUser: (req, res) => {
-    if (req.cookies.access_token === undefined) {
-      return res.status(401).json({ error: 'Already logged out' });
-    }
+    try {
+      if (req.cookies.access_token === undefined) {
+        return res.status(401).json({ error: 'Already logged out' });
+      }
 
-    return res.clearCookie('access_token').sendStatus(200);
+      return res.clearCookie('access_token').sendStatus(200);
+    } catch (error) {
+      return res.status(500).json({ error });
+    }
   }
 };

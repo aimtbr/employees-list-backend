@@ -1,5 +1,10 @@
 const { Schema } = require('mongoose');
-const { genders, positions } = require('../../lib/constants.js');
+const {
+  GENDERS_ENUM,
+  POSITIONS_ENUM,
+  DEFAULT_GENDER,
+  DEFAULT_POSITION
+} = require('../../lib/constants.js');
 
 
 const { Types } = Schema;
@@ -12,24 +17,34 @@ const Employees = new Schema({
   },
   gender: {
     type: Types.String,
-    enum: genders
+    enum: GENDERS_ENUM,
+    default: DEFAULT_GENDER
   },
   contacts: {
     type: Types.String,
-    maxLength: 25
+    maxLength: 20
   },
   position: {
     type: Types.String,
-    enum: positions,
+    enum: POSITIONS_ENUM,
+    default: DEFAULT_POSITION
   },
   salary: {
     type: Types.Number,
-    min: 0
+    min: 0,
+    default: 0,
   },
   deleted: {
     type: Types.Boolean,
     default: false
   }
-}, { timestamps: { currentTime: () => new Date().toISOString() } });
+},
+  {
+    timestamps: {
+      currentTime: () => new Date().toISOString(),
+      createdAt: 'dateAdded'
+    }
+  }
+);
 
 module.exports = Employees;

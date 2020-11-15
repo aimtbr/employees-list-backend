@@ -10,7 +10,7 @@ const { isAuthorized } = require('./lib/middleware.js');
 const { PORT = 3000 } = process.env;
 
 const useModifications = (app) => {
-  app.use(cors());
+  app.use(cors({ origin: 'http://localhost:3001', credentials: true }));
   app.use(cookieParser());
   app.use(express.json());
   app.use(express.text());

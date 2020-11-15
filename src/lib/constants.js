@@ -1,14 +1,17 @@
 module.exports = {
-  genders: [
+  DEFAULT_GENDER: 'other',
+  GENDERS_ENUM: [
     'male',
     'female',
     'other'
   ],
-  positions: [
+  DEFAULT_POSITION: 'n/n',
+  POSITIONS_ENUM: [
+    'n/n',
     'Developer',
     'HR',
     'CEO',
     'Legal',
     'Finance'
-  ]
+  ],
 };

@@ -1,6 +1,8 @@
 const { Schema } = require('mongoose');
 const { v4: uuidv4 } = require('uuid');
 
+const { isValidEmail, isValidLogin } = require('../../lib/helpers.js');
+
 
 const { Types } = Schema;
 
@@ -9,20 +11,21 @@ const Users = new Schema({
     type: Types.String,
     required: true,
     validate: {
-      validator: (value) => {
-        return /^[^.,\s][\d,\w,\S]+@[\d,\w]+\.\w+$/.test(value);
-      }
+      validator: isValidEmail
+    }
+  },
+  login: {
+    type: Types.String,
+    required: true,
+    validate: {
+      validator: isValidLogin
     }
   },
   password: {
     type: Types.String,
     required: true,
-    maxLength: 100
-  },
-  login: {
-    type: Types.String,
-    required: true,
-    maxlength: 25
+    minLength: 8,
+    maxLength: 100,
   },
   secret: {
     type: Types.String,
