@@ -3,9 +3,9 @@
     "host": "localhost",
     "port": "27017",
     "db": "employees-list",
-    "username": "default",
-    "password": "n1J241L9FkpMF64"
+    "username": "your-username",
+    "password": "your-password"
   },
   "allowedHost": "http://localhost:3001",
-  "salt": "d33df647-5f20-443e-a634-2e6a53d68839"
+  "salt": "your-salt-to-decrypt-the-incoming-messages"
 }
