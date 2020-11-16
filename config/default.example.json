@@ -6,6 +6,7 @@
     "username": "your-username",
     "password": "your-password"
   },
+  "port": 3000,
   "allowedHost": "http://localhost:3001",
   "salt": "your-salt-to-decrypt-the-incoming-messages"
 }

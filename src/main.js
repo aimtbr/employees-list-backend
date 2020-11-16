@@ -8,7 +8,7 @@ const { connectToDatabase } = require('./db');
 const { isAuthorized } = require('./lib/middleware.js');
 
 const allowedHost = config.get('allowedHost');
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || config.get('port');
 
 const useModifications = (app) => {
   app.use(cors({ origin: allowedHost, credentials: true }));
