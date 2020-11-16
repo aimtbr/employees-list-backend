@@ -3,7 +3,8 @@ const {
   GENDERS_ENUM,
   POSITIONS_ENUM,
   DEFAULT_GENDER,
-  DEFAULT_POSITION
+  DEFAULT_POSITION,
+  DEFAULT_CONTACTS
 } = require('../../lib/constants.js');
 
 
@@ -12,8 +13,8 @@ const { Types } = Schema;
 const Employees = new Schema({
   fullName: {
     type: Types.String,
-    minLength: 2,
-    maxLength: 100
+    maxLength: 100,
+    default: ''
   },
   gender: {
     type: Types.String,
@@ -22,7 +23,8 @@ const Employees = new Schema({
   },
   contacts: {
     type: Types.String,
-    maxLength: 20
+    maxLength: 20,
+    default: DEFAULT_CONTACTS
   },
   position: {
     type: Types.String,
