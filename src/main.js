@@ -1,4 +1,5 @@
 const express = require('express');
+const config = require('config');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
 
@@ -6,11 +7,11 @@ const routers = require('./routes');
 const { connectToDatabase } = require('./db');
 const { isAuthorized } = require('./lib/middleware.js');
 
-
-const { PORT = 3000 } = process.env;
+const allowedHost = config.get('allowedHost');
+const port = process.env.PORT || 3000;
 
 const useModifications = (app) => {
-  app.use(cors({ origin: 'http://localhost:3001', credentials: true }));
+  app.use(cors({ origin: allowedHost, credentials: true }));
   app.use(cookieParser());
   app.use(express.json());
   app.use(express.text());
@@ -27,8 +28,8 @@ const run = async () => {
 
   useModifications(app);
 
-  app.listen(PORT, () => {
-    console.log('App is running on port ' + PORT);
+  app.listen(port, () => {
+    console.log('App is running on port ' + port);
   });
 };
 
