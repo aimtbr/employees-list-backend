@@ -6,9 +6,9 @@ module.exports = {
     'female',
     'other'
   ],
-  DEFAULT_POSITION: 'n/n',
+  DEFAULT_POSITION: 'n/a',
   POSITIONS_ENUM: [
-    'n/n',
+    'n/a',
     'Developer',
     'HR',
     'CEO',
